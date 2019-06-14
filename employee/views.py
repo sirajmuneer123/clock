@@ -116,6 +116,7 @@ class IdleView(View):
                     diff = date_now - start
                     obj.breaking_hours = obj.breaking_hours + diff
                 obj.save()
-            return HttpResponse(json.dumps({"status": "1", "old_type": old_type}))
+            return HttpResponse(json.dumps({"status": "1"}))
         except Exception as e:
             return HttpResponse(json.dumps({"status": "0", 'error': str(e)}))
+

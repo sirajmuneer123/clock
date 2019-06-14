@@ -16,7 +16,7 @@ $( document ).ready(function() {
     
     function startTimer() {
         // wait 2 seconds before calling goInactive
-        timeoutID = window.setTimeout(goInactive, 36000*1);
+        timeoutID = window.setTimeout(goInactive, 36000*10);
     }
     
     function resetTimer(e) {
@@ -31,13 +31,13 @@ $( document ).ready(function() {
         console.log("idleleeeee", timeoutID)
         $.ajax({
             type: 'post',
-            url: '/employee/idle_time/',
+            url: '/employee/idle-time/',
             data: {
                 'status': 'start',
                 'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
             },
             success: function(data) {
-                var dd
+                 console.log("idle start response", data)
             }
         })
     }
@@ -48,13 +48,13 @@ $( document ).ready(function() {
             console.log("idleleeeeeactive", timeoutID)
             $.ajax({
                 type: 'post',
-                url: '/employee/idle_time/',
+                url: '/employee/idle-time/',
                 data: {
                     'status': 'stop',
                     'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
                 },
                 success: function(data) {
-                    var dd
+                    console.log("idle stop response", data)
                 }
             })
             time_status = false 
