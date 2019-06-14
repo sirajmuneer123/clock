@@ -1,0 +1,74 @@
+{% extends "superAdmin/superAdminLayout.html" %}
+{% load crispy_forms_tags %}
+{% block title %}SuperAdmin Home{% endblock %}
+{% block css %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="card border-bottom-primary">
+            <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                        <th scope="col">Si No</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in object_list %}
+                        <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{employee.first_name}}</td>
+                        <td>{{employee.last_name}}</td>
+                        <td>{{employee.username}}</td>
+                        <td>{{employee.email}}</td>
+                        <td>
+                            <a href="{% url 'employee-delete' employee.id %}" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                            <a href="{% url 'employee-update' employee.id %}" class="btn btn-success btn-sm">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        </td>
+                        </tr>
+                        {% empty %}
+                            <tr>No articles yet.</tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                {% if is_paginated %}
+                <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                    </li>
+                    {% endif %}
+                     {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="page-item active"><span class="page-link" >{{i}}</span></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                </nav>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

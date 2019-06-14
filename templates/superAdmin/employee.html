@@ -1,0 +1,20 @@
+{% extends "superAdmin/superAdminLayout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row">
+    <div class="col-6">
+        <div class="card border-bottom-primary">
+            <div class="card-body">
+                <form method="post">{% csrf_token %}
+                    {% if delete %}
+                    <p>Are you sure you want to delete "{{ object }}"?</p>
+                    {% else %}
+                    {{ form|crispy }}
+                    {% endif %}
+                    <input type="submit" class="btn btn-primary" value="{{value}}">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
