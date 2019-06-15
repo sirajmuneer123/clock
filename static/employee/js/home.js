@@ -71,7 +71,6 @@ $( document ).ready(function() {
                     }else if(type == '3'){
                         button.val('Start Meeting')
                     }
-                    button.val('')
                 }
                 console.log("yyyyyyyyyy stop", data)
             }

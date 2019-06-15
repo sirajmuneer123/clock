@@ -37,5 +37,7 @@ Home{% endblock %} {% block css %}
             </div>
         </div>
     </div>
-    {% endblock %} {% block script %}
-    <script src="{% static 'employee/js/home.js' %}"></script> {% endblock%}
+    {% endblock %} 
+    {% block script %}{{ block.super }}
+    <script src="{% static 'employee/js/home.js' %}"></script>
+     {% endblock%}
