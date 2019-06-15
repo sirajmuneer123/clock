@@ -1,45 +1,41 @@
-{% extends "employee/employeeLayout.html" %}
-{% load staticfiles %}
-{% load crispy_forms_tags %}
-{% block title %}Employee Home{% endblock %}
-{% block css %}
-<link href="{% static 'employee/css/home.css' %}" rel="stylesheet">
-{% endblock %}
-{% block content %}
+{% extends "employee/employeeLayout.html" %} {% load staticfiles %} {% load crispy_forms_tags %} {% block title %}Employee
+Home{% endblock %} {% block css %}
+<link href="{% static 'employee/css/home.css' %}" rel="stylesheet"> {% endblock %} {% block content %}
 <div class="row">
-    <div class="col-6">
+    <div class="col">
         <div class="card border-bottom-primary">
-            <div class="card-body">{% csrf_token %}
+            <div class="card-body ">{% csrf_token %}
                 <div class="row">
-                    <div class="col-6">
-                        {% if clock_obj.status == '1'%}
-                        <input type="button" class="btn btn-danger stop_clock" data-type="1" value="Stop Working"></input>
-                        {% else%}
-                        <input type="button" class="btn btn-success start_clock" data-type="1" value="Start Working"></input>
-                        {% endif %}
+                    <div class="col-md-4">
+                        <div class="bttn-wraper">
+                            {% if clock_obj.status == '1'%}
+                            <input type="button" class="btn btn-danger stop_clock btn-block" data-type="1" value="Stop Working"></input>
+                            {% else%}
+                            <input type="button" class="btn btn-success start_clock btn-block" data-type="1" value="Start Working"></input>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="col-6">
-                       {% if clock_obj.status == '2'%}
-                        <input type="button" class="btn btn-danger stop_clock" data-type="2" value="Stop Break"></input>
-                        {% else%}
-                        <input type="button" class="btn btn-success start_clock" data-type="2" value="Start Break"></input>
-                        {% endif %}
+                    <div class="col-md-4">
+                        <div class="bttn-wraper">
+                            {% if clock_obj.status == '2'%}
+                            <input type="button" class="btn btn-danger stop_clock btn-block" data-type="2" value="Stop Break"></input>
+                            {% else%}
+                            <input type="button" class="btn btn-success start_clock btn-block" data-type="2" value="Start Break"></input>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                       {% if clock_obj.status == '3'%}
-                        <input type="button" class="btn btn-danger stop_clock" data-type="3" value="Stop Meeting"></input>
-                        {% else%}
-                        <input type="button" class="btn btn-success start_clock" data-type="3" value="Start Meeting"></input>
-                        {% endif %}
+                    <div class="col-md-4">
+                        <div class="bttn-wraper">
+                            {% if clock_obj.status == '3'%}
+                            <input type="button" class="btn btn-danger stop_clock btn-block" data-type="3" value="Stop Meeting"></input>
+                            {% else%}
+                            <input type="button" class="btn btn-success start_clock btn-block" data-type="3" value="Start Meeting"></input>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
-{% block script %}
-<script src="{% static 'employee/js/home.js' %}"></script>
-{% endblock%}
+    {% endblock %} {% block script %}
+    <script src="{% static 'employee/js/home.js' %}"></script> {% endblock%}

@@ -9,8 +9,8 @@ from superAdmin.models import Clock
 from django.views import View
 from django.http import HttpResponse
 import json
-# Create your views here.
-class Home(TemplateView):
+from django.contrib.auth.mixins import LoginRequiredMixin
+class Home(LoginRequiredMixin, TemplateView):
     template_name = 'employee/home.html'
 
     def get_context_data(self, **kwargs):
@@ -18,7 +18,7 @@ class Home(TemplateView):
         context['clock_obj'] = Clock.objects.get(employee=self.request.user, date=date.today())
         return context
 
-class startView(View):
+class startView(LoginRequiredMixin, View):
     """ To start clock
     """
     def post(self, request, *args, **kwargs):
@@ -65,7 +65,7 @@ class startView(View):
 
 
 
-class stopView(View):
+class stopView(LoginRequiredMixin, View):
     """ To start clock
     """
     def post(self, request, *args, **kwargs):
@@ -97,7 +97,7 @@ class stopView(View):
 
 
 
-class IdleView(View):
+class IdleView(LoginRequiredMixin, View):
     """ To start clock
     """
     def post(self, request, *args, **kwargs):

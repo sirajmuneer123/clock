@@ -7,13 +7,11 @@ from django.views.generic.list import ListView
 from django.core.mail import send_mail
 from django.conf import settings as SETTINGS
 from superAdmin.models import Clock
-
-# Create your views here.
-class Home1(TemplateView):
-    template_name = 'superAdmin/home.html'
+from django.contrib.auth.mixins import LoginRequiredMixin
+# Create your views here.l
 
 
-class Employee(CreateView):
+class Employee(LoginRequiredMixin, CreateView):
     model = User
     fields = ['username', 'first_name', 'last_name', 'email']
     template_name = 'superAdmin/employee.html'
@@ -32,9 +30,10 @@ class Employee(CreateView):
     def get_context_data(self, **kwargs):
         ctx = super(Employee, self).get_context_data(**kwargs)
         ctx['value'] = 'Save'
+        ctx['navigation'] = 'Employee'
         return ctx
 
-class EmployeeUpdate(UpdateView):
+class EmployeeUpdate(LoginRequiredMixin, UpdateView):
     model = User
     fields = ['username', 'first_name', 'last_name', 'email']
     template_name = 'superAdmin/employee.html'
@@ -47,7 +46,7 @@ class EmployeeUpdate(UpdateView):
         return ctx
 
 
-class EmployeeDelete(DeleteView):
+class EmployeeDelete(LoginRequiredMixin, DeleteView):
     model = User
     template_name = 'superAdmin/employee.html'
     success_url = reverse_lazy('home')
@@ -59,19 +58,19 @@ class EmployeeDelete(DeleteView):
         return ctx
 
 
-class ClockDelete(DeleteView):
+class ClockDelete(LoginRequiredMixin, DeleteView):
     model = Clock
     template_name = 'superAdmin/employee.html'
     success_url = reverse_lazy('report')
 
     def get_context_data(self, **kwargs):
-        ctx = super(UpdateDelete, self).get_context_data(**kwargs)
+        ctx = super(ClockDelete, self).get_context_data(**kwargs)
         ctx['value'] = 'Confirm'
         ctx['delete'] = True
         return ctx
 
 
-class ClockUpdate(UpdateView):
+class ClockUpdate(LoginRequiredMixin, UpdateView):
     model = Clock
     fields = ['working_hours', 'breaking_hours', 'meeting_hours']
     template_name = 'superAdmin/employee.html'
@@ -83,7 +82,7 @@ class ClockUpdate(UpdateView):
         ctx['value'] = 'Update'
         return ctx
 
-class Home(ListView):
+class Home(LoginRequiredMixin, ListView):
     template_name = 'superAdmin/home.html'
     paginate_by = 10 
     queryset = User.objects.filter(groups__name="employee")
@@ -93,7 +92,7 @@ class Home(ListView):
         context['now'] = 'timezone.now()'
         return context
 
-class ReportView(ListView):
+class ReportView(LoginRequiredMixin, ListView):
     template_name = 'superAdmin/report.html'
     paginate_by = 10 
     queryset = Clock.objects.all().order_by('-date')
@@ -108,3 +107,4 @@ def send_password(to_email, message):
         fail_silently=False,
     )
     return True
+
