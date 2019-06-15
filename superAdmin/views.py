@@ -18,6 +18,7 @@ class Employee(LoginRequiredMixin, CreateView):
     fields = ['username', 'first_name', 'last_name', 'email']
     template_name = 'superAdmin/employee.html'
     success_url = reverse_lazy('home')
+
     def form_valid(self, form):
         response = super(Employee, self).form_valid(form)
         password = User.objects.make_random_password(length=6)
@@ -25,7 +26,7 @@ class Employee(LoginRequiredMixin, CreateView):
         grp, created = Group.objects.get_or_create(name="employee")
         self.object.groups.add(grp)
         self.object.save()
-        message = "Username : " + self.object.username + ", Password : " + password
+        message = "EmployeeId : " + self.object.username + ", Password : " + password
         send_password(self.object.email, message)
         return response
 

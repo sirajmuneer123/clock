@@ -117,6 +117,7 @@ class IdleView(LoginRequiredMixin, View):
                     start = obj.break_start
                     diff = date_now - start
                     obj.breaking_hours = obj.breaking_hours + diff
+                    obj.working_hours = obj.working_hours - diff
                 obj.save()
             return HttpResponse(json.dumps({"status": "1"}))
         except Exception as e:

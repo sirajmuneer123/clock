@@ -16,6 +16,8 @@ $( document ).ready(function() {
                 if(res.status == "1"){
                     button.removeClass("btn btn-success")
                     button.addClass("btn btn-danger")
+                    button.removeClass("start_clock")
+                    button.addClass("stop_clock")
                     if(res.old_type == "1"){
                         $('*[data-type="1"]').val('Start Working')
                         $('*[data-type="1"]').removeClass("btn btn-danger")
@@ -55,6 +57,21 @@ $( document ).ready(function() {
                 'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
             },
             success: function(data) {
+                var res = JSON.parse(data)
+                if(res.status == "1"){
+                    button.removeClass("btn btn-danger")
+                    button.addClass("btn btn-success")
+                    button.removeClass("stop_clock")
+                    button.addClass("start_clock")
+                    if(type == '1'){
+                        button.val('Start Working')
+                    }else if(type == '2'){
+                        button.val('Start Breaking')
+                    }else if(type == '3'){
+                        button.val('Start Meeting')
+                    }
+                    button.val('')
+                }
                 console.log("yyyyyyyyyy stop", data)
             }
         });
