@@ -27,7 +27,6 @@ class LoginView(FormView):
             if user.is_active:
                 auth_login(request, user)
                 user_group = str(user.groups.all()[0])
-                print ("Group : ", user_group)
                 if user_group == 'superadmin':
                     return HttpResponseRedirect('/superadmin/')
                 elif user_group == 'employee':
@@ -84,7 +83,7 @@ class LogoutView(RedirectView):
 
 class RegisterView(FormView):
     """
-    Provides the ability to register as a user with a username and password
+    Provides the ability to register as a user with some details
     """
     form_class = AuthenticationForm
     template_name = "common/register.html"

@@ -11,6 +11,8 @@ from django.http import HttpResponse
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 class Home(LoginRequiredMixin, TemplateView):
+    """ Clock start and stop menues
+    """
     template_name = 'employee/home.html'
 
     def get_context_data(self, **kwargs):
@@ -66,7 +68,7 @@ class startView(LoginRequiredMixin, View):
 
 
 class stopView(LoginRequiredMixin, View):
-    """ To start clock
+    """ To stop clock
     """
     def post(self, request, *args, **kwargs):
         data = self.request.POST
@@ -98,16 +100,16 @@ class stopView(LoginRequiredMixin, View):
 
 
 class IdleView(LoginRequiredMixin, View):
-    """ To start clock
+    """ To save idle time
     """
     def post(self, request, *args, **kwargs):
         data = self.request.POST
         status = data.get('status', False)
         date_now = datetime.now()
         date = datetime.now() - timedelta(minutes=10)
-        obj = Clock.objects.get(employee=request.user, date=date.today())
-        old_type = obj.status
         try:
+            obj = Clock.objects.get(employee=request.user, date=date.today())
+            old_type = obj.status
             if old_type == "1":
                 if status == 'start':
                     obj.break_start = date

@@ -12,6 +12,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class Employee(LoginRequiredMixin, CreateView):
+    """ To create emoloyee
+    """
     model = User
     fields = ['username', 'first_name', 'last_name', 'email']
     template_name = 'superAdmin/employee.html'
@@ -34,6 +36,8 @@ class Employee(LoginRequiredMixin, CreateView):
         return ctx
 
 class EmployeeUpdate(LoginRequiredMixin, UpdateView):
+    """ To update emolyee details
+    """
     model = User
     fields = ['username', 'first_name', 'last_name', 'email']
     template_name = 'superAdmin/employee.html'
@@ -47,6 +51,8 @@ class EmployeeUpdate(LoginRequiredMixin, UpdateView):
 
 
 class EmployeeDelete(LoginRequiredMixin, DeleteView):
+    """ To delete Employee
+    """
     model = User
     template_name = 'superAdmin/employee.html'
     success_url = reverse_lazy('home')
@@ -59,6 +65,8 @@ class EmployeeDelete(LoginRequiredMixin, DeleteView):
 
 
 class ClockDelete(LoginRequiredMixin, DeleteView):
+    """ To delete clock one day entry
+    """
     model = Clock
     template_name = 'superAdmin/employee.html'
     success_url = reverse_lazy('report')
@@ -71,6 +79,8 @@ class ClockDelete(LoginRequiredMixin, DeleteView):
 
 
 class ClockUpdate(LoginRequiredMixin, UpdateView):
+    """ To update clock one day details
+    """
     model = Clock
     fields = ['working_hours', 'breaking_hours', 'meeting_hours']
     template_name = 'superAdmin/employee.html'
@@ -83,9 +93,11 @@ class ClockUpdate(LoginRequiredMixin, UpdateView):
         return ctx
 
 class Home(LoginRequiredMixin, ListView):
+    """ To list all employees
+    """
     template_name = 'superAdmin/home.html'
     paginate_by = 10 
-    queryset = User.objects.filter(groups__name="employee")
+    queryset = User.objects.filter(groups__name="employee").order_by('-id')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -93,12 +105,16 @@ class Home(LoginRequiredMixin, ListView):
         return context
 
 class ReportView(LoginRequiredMixin, ListView):
+    """ To list clock details of all employees
+    """
     template_name = 'superAdmin/report.html'
-    paginate_by = 10 
+    paginate_by = 10
     queryset = Clock.objects.all().order_by('-date')
 
 
 def send_password(to_email, message):
+    """ To send mail
+    """
     send_mail(
         'Employee credential',
         message,

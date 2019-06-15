@@ -16,7 +16,7 @@ $( document ).ready(function() {
     
     function startTimer() {
         // wait 2 seconds before calling goInactive
-        timeoutID = window.setTimeout(goInactive, 36000*10);
+        timeoutID = window.setTimeout(goInactive, 36000);
     }
     
     function resetTimer(e) {
