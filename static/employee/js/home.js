@@ -49,6 +49,7 @@ $( document ).ready(function() {
 
     $('.stop_clock').click(function(e) {
         var type = $(this).attr("data-type") 
+        var button = $(this)
         $.ajax({
             type: 'post',
             url: '/employee/stop/',
