@@ -1,0 +1,78 @@
+{% extends "superAdmin/superAdminLayout.html" %}
+{% load crispy_forms_tags %}
+{% load poll_extras %}
+{% block title %}SuperAdmin Home{% endblock %}
+{% block css %}
+{% endblock %}
+{% block navigation %}Report{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="card border-bottom-primary">
+            <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                        <th scope="col">Si No</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Working Hours</th>
+                        <th scope="col">Breaking Hours</th>
+                        <th scope="col">Meeting Hours</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for clock in object_list %}
+                        <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{clock.employee.get_full_name}}</td>
+                        <td>{{clock.date}}</td>
+                        <td>{{clock.working_hours|duration}}</td>
+                        <td>{{clock.breaking_hours|duration}}</td>
+                        <td>{{clock.meeting_hours|duration}}</td>
+                        <td>
+                            <a href="{% url 'clock-delete' clock.id %}" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                            <a href="{% url 'clock-update' clock.id %}" class="btn btn-success btn-sm">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        </td>
+                        </tr>
+                        {% empty %}
+                            <tr>No articles yet.</tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                {% if is_paginated %}
+                <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                    </li>
+                    {% endif %}
+                     {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="page-item active"><span class="page-link" >{{i}}</span></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                </nav>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
