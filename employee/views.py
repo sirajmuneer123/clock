@@ -15,7 +15,7 @@ class Home(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['clock_obj'] = Clock.objects.get(date=date.today())
+        context['clock_obj'] = Clock.objects.get(employee=self.request.user, date=date.today())
         return context
 
 class startView(View):
@@ -26,7 +26,7 @@ class startView(View):
         type_value = data.get('type', False)
         date = datetime.now()
         try:
-            obj = Clock.objects.get(date=date.today())
+            obj = Clock.objects.get(employee=request.user, date=date.today())
             old_type = obj.status
             if obj.status == '1':
                 start = obj.work_start
@@ -72,7 +72,7 @@ class stopView(View):
         data = self.request.POST
         type_value = data.get('type', False)
         date = datetime.now()
-        obj = Clock.objects.get(date=date.today())
+        obj = Clock.objects.get(employee=request.user, date=date.today())
         old_type = obj.status
         try:
             if obj.status == '1':
@@ -105,7 +105,7 @@ class IdleView(View):
         status = data.get('status', False)
         date_now = datetime.now()
         date = datetime.now() - timedelta(minutes=10)
-        obj = Clock.objects.get(date=date.today())
+        obj = Clock.objects.get(employee=request.user, date=date.today())
         old_type = obj.status
         try:
             if old_type == "1":

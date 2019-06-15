@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.contrib import messages
 from superAdmin.models import Clock
 from datetime import datetime, timedelta, date
+from django.contrib.auth.models import User , Group
 # Create your views here.
 class LoginView(FormView):
     """
@@ -58,7 +59,25 @@ class LogoutView(RedirectView):
     url = '/'
 
     def get(self, request, *args, **kwargs):
-        auth_logout(request)
+
+        if self.request.user.groups.filter(name="employee").exists():
+            date = datetime.now()
+            obj = Clock.objects.get(employee=request.user, date=date.today())
+            old_type = obj.status
+            if obj.status == '1':
+                start = obj.work_start
+                diff = date - start
+                obj.working_hours = obj.working_hours + diff
+            elif obj.status == '2':
+                start = obj.break_start
+                diff = date - start
+                obj.breaking_hours = obj.breaking_hours + diff
+            elif obj.status == '3':
+                start = obj.meeting_start
+                diff = date - start
+                obj.meeting_hours = obj.meeting_hours + diff
+            obj.save()
+            auth_logout(request)
         return super(LogoutView, self).get(request, *args, **kwargs)
 
 
@@ -71,6 +90,27 @@ class RegisterView(FormView):
     template_name = "common/register.html"
 
     def post(self, request):
-        username = self.request.POST['username']
-        password = self.request.POST['password']
-        return HttpResponseRedirect('/register')
+        try:
+            data = self.request.POST
+            password = data.get('password', '')
+            repeat_password = data.get('repeatPassword', '')
+            username = data.get('username', '')
+            if password != repeat_password:
+                messages.error(self.request, _("Password Mismatch!"))
+                return HttpResponseRedirect('/register')
+            if User.objects.filter(username=username).exists():
+                messages.error(self.request, _("Username already exist!"))
+                return HttpResponseRedirect('/register')
+            user = User.objects.create(
+                username=username,
+                first_name=data.get('first_name', ''),
+                last_name=data.get('last_name', ''),
+                email=data.get('email', ''),
+            )
+            user.set_password(password)
+            user.save()
+            grp, created = Group.objects.get_or_create(name="superadmin")
+            user.groups.add(grp)
+            return HttpResponseRedirect('/')
+        except Exception as e:
+            return HttpResponseRedirect('/register')

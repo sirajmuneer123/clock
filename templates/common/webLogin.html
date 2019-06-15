@@ -63,10 +63,17 @@
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                     </a>-->
                   </form>
-                  <hr>
-                  <div class="text-center">
-                    <a class="small" href="forgot-password.html">Forgot Password?</a>
+                  {% if messages %} {% for msg in messages %}
+
+                  <div class="alert alert-{{msg.level_tag}} flash-alert" role="alert" style="color:red">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> {{msg.message}}
                   </div>
+
+                  {% endfor %} {% endif %}
+                  <hr>
+                  <!--<div class="text-center">
+                    <a class="small" href="forgot-password.html">Forgot Password?</a>
+                  </div>-->
                   <div class="text-center">
                     <a class="small" href="{% url 'register' %}">Create an Account!</a>
                   </div>
